@@ -1,5 +1,5 @@
 {
-    "name": "toucan-hardhat",
+    "name": "@toucan-project/hardhat",
     "version": "1.0.0",
     "license": "MIT",
     "scripts": {
