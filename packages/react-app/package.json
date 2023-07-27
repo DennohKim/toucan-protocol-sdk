@@ -13,18 +13,18 @@
     "@celo/rainbowkit-celo": "^1.0.1",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.18",
+    "@phosphor-icons/react": "^2.0.10",
     "@rainbow-me/rainbowkit": "^1.0.2",
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
     "ethers": "^5.7.2",
     "next": "^13.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "toucan-sdk": "^1.0.4-beta",
-    "viem": "^0.3.30",
-    "wagmi": "^1.2",
     "tw-elements": "^1.0.0-beta2",
-	"axios": "^1.4.0",
-	"dotenv": "^16.0.3"
-
+    "viem": "^0.3.30",
+    "wagmi": "^1.2"
   },
   "devDependencies": {
     "@types/node": "^20.2.1",

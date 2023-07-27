@@ -1,16 +1,17 @@
 import { Disclosure } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, CubeIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '../images/logo-grey.svg';
+import { Cube } from '@phosphor-icons/react';
 
 export default function Header() {
   return (
-    <Disclosure as='nav' className='bg-slate-950 border-b border-slate-700'>
+    <Disclosure as='nav' className='bg-white'>
       {({ open }) => (
         <>
-          <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
+          <div className='mx-auto font-body max-w-7xl px-2 sm:px-6 lg:px-8'>
             <div className='relative flex h-16 justify-between'>
               <div className='absolute inset-y-0 left-0 flex items-center sm:hidden'>
                 {/* Mobile menu button */}
@@ -24,21 +25,17 @@ export default function Header() {
                 </Disclosure.Button>
               </div>
               <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
-                <div className='flex flex-shrink-0 items-center'>
-                  <Link href='/'>
-                    <Image
-                      className='block h-8 w-auto sm:block lg:block'
-                      src={Logo}
-                      width='24'
-                      height='24'
-                      alt='Celo Logo'
-                    />
+                <div className='flex flex-shrink-0 items-center justify-center'>
+                  <Link className='font-body hidden sm:flex items-center space-x-2' href='/'>
+                    {' '}
+                    <Cube className='text-forest'/>
+                    <span className='text-forest'>CarbonHero</span>
                   </Link>
                 </div>
                 <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
                   <Link
                     href='/'
-                    className='inline-flex items-center border-b-2 border-black px-1 pt-1 text-sm font-medium text-slate-400'
+                    className='font-body inline-flex items-center px-1 pt-1 text-sm font-medium text-wood'
                   >
                     Home
                   </Link>
@@ -46,7 +43,7 @@ export default function Header() {
                 <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
                   <Link
                     href='/Retirements'
-                    className='inline-flex items-center border-b-2 border-black px-1 pt-1 text-sm font-medium text-slate-400'
+                    className='font-body inline-flex items-center px-1 pt-1 text-sm font-medium text-wood'
                   >
                     Retirements
                   </Link>
@@ -61,18 +58,18 @@ export default function Header() {
           </div>
 
           <Disclosure.Panel className='sm:hidden'>
-            <div className='space-y-1 pt-2 pb-4'>
+            <div className='font-body space-y-1 pt-2 pb-4'>
               <Disclosure.Button
                 as='a'
                 href='/'
-                className='block border-l-4 border-white py-2 pl-3 pr-4 text-base font-medium text-slate-400'
+                className='block border-l-4 border-white py-2 pl-3 pr-4 text-base font-medium text-wood'
               >
                 Home
               </Disclosure.Button>
               <Disclosure.Button
                 as='a'
                 href='/Retirements'
-                className='block border-l-4 border-white py-2 pl-3 pr-4 text-base font-medium text-slate-400'
+                className='block border-l-4 border-white py-2 pl-3 pr-4 text-base font-medium text-wood'
               >
                 Retirements
               </Disclosure.Button>

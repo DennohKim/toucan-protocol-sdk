@@ -11,6 +11,7 @@ import { ApolloProvider } from '@apollo/client';
 import client from '../apollo-client';
 import { useEffect } from 'react';
 
+
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID as string; // get one at https://cloud.walletconnect.com/app
 
 const { chains, publicClient } = configureChains(
@@ -35,19 +36,21 @@ const wagmiConfig = createConfig({
 });
 
 function App({ Component, pageProps }: AppProps) {
-	 useEffect(() => {
-     const importTE = async () => {
-       (await import('tw-elements')).default;
-     };
-     importTE();
-   }, []);
+  useEffect(() => {
+    const importTE = async () => {
+      (await import('tw-elements')).default;
+    };
+    importTE();
+  }, []);
 
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains} appInfo={appInfo} coolMode={true}>
         <ApolloProvider client={client}>
           <Layout>
-            <Component {...pageProps} />
+            <Component
+              {...pageProps}
+            />
           </Layout>
         </ApolloProvider>
       </RainbowKitProvider>

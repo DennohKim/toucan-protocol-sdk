@@ -1,197 +1,475 @@
-<!-- TITLE -->
-<p align="center"> 
-  <img width="100px" src="https://github.com/celo-org/celo-composer/blob/main/images/readme/celo_isotype.svg" align="center" alt="Celo" />
- <h2 align="center">Celo Composer</h2>
- <p align="center">Build, deploy, and iterate quickly on decentralized applications using Celo.</p>
-</p>
-  <p align="center">
-    <a href="https://github.com/celo-org/celo-composer/graphs/stars">
-      <img alt="GitHub Contributors" src="https://img.shields.io/github/stars/celo-org/celo-composer?color=FCFF52" />
-    </a>
-    <a href="https://github.com/celo-org/celo-composer/graphs/contributors">
-      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/celo-org/celo-composer?color=E7E3D4" />
-    </a>
-    <a href="https://github.com/celo-org/celo-composer/issues">
-      <img alt="Issues" src="https://img.shields.io/github/issues/celo-org/celo-composer?color=E7E3D4" />
-    </a>
-    <a href="https://github.com/celo-org/celo-composer/pulls">
-      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/celo-org/celo-composer?color=E7E3D4" />
-    </a>
-    <a href="https://opensource.org/license/mit/">
-      <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
-    </a>
-  </p>
-</p>
+# Retiring Carbon Credits on Celo using Toucan SDK
 
-<!-- TABLE OF CONTENTS -->
+Retire Carbon Credits on Celo using ToucanSDK
+Learn how to make your dApp climate positive with a few lines of code.
+Climate change is real, and thinking of our carbon footprint when building software should be part of the planning process as much as thinking about the architecture. One blockchain that is leading in this regard is Celo blockchain, and they are even offsetting more carbon than they are producing. So, if your choice of network for your application is Celo, you already made a step in the right direction. But other actions can increase your or your users carbon footprint and, in this tutorial, you will learn how to account for that in a few lines of code and create a climate positive app. If you are new to carbon credit retirements and what kind of infrastructure tools Toucan provides, make sure to read up on it in their blog.
 
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
+### Prerequisites:
 
-<!-- ABOUT THE PROJECT -->
-
-## About The Project
-
-Celo Composer allows you to quickly build, deploy, and iterate on decentralized applications using Celo. It provides a number of frameworks, examples, and Celo specific functionality to help you get started with your next dApp.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-## Built With
-
-Celo Composer is built on Celo to make it simple to build dApps using a variety of front-end frameworks, and libraries.
-
-- [Celo](https://celo.org/)
-- [Solidity](https://docs.soliditylang.org/en/v0.8.19/)
-- [Next.js](https://nextjs.org/)
-- [React.js](https://reactjs.org/)
-- [Material UI](https://mui.com/)
-- [React Native](https://reactnative.dev/)
-- [Flutter](https://docs.flutter.dev/)
-- [React-celo](https://github.com/celo-org/react-celo/)
-- [Rainbowkit-celo](https://github.com/celo-org/rainbowkit-celo)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-
-## Prerequisites
+To start building, you'll need a basic understanding of web development, Node (v12), yarn, and Git.
 
 - Node
-- Git (v2.38 or higher)
+- Yarn
+- Git
 
-## How to use Celo Composer
+### Tools we will use:
 
-The easiest way to start with Celo Composer is using `@celo/celo-composer`. This CLI tool lets you quickly start building dApps on Celo for multiple frameworks, including React (with either react-celo or rainbowkit-celo), React Native (w/o Expo), Flutter, and Angular. To get started, just run the following command, and follow the steps:
+- Celo-Composer
+- Toucan SDK
 
-```bash
-npx @celo/celo-composer@latest create
+Okay. What will learn in this tutorial in detail? We will learn how to retire carbon credits on Celo in a React. To do that we will redeem Nature Carbon Tonnes (NCTs) for tokenized carbon credits (TCO2s) and retire those. We will also learn how to get all data related to tokens and retirements through querying the [subgraph](https://thegraph.com/hosted-service/subgraph/toucanprotocol/alfajores).
+
+By the end of this tutorial, you will know
+
+- how to redeem NCT for TCO2
+- how to retire TCO2
+- how to query the subgraph to get details on tokens, retirements and certificates
+
+**_And now lets start building 🏗_**
+
+---
+
+## Install Celo-Composer
+
+We will use Celo-Composer to quick-start our web3 application. It already comes with several wallet integrations using rainbow-kit, wagmi for easy interactions with the blockchain and tailwind for styling.
+
+Make sure to use the right version of Celo Composer. The newer version is already upgraded to wagmi 1.xx. But the Toucan SDK is not yet.
+
+```
+npx @celo/celo-composer create
 ```
 
-### Front-end framework
+To create a simple example project, we just chose the default, except for Choose smart-contract framework:, there we choose none as we won't need that for this tutorial.
 
-![Celo Composer select framework](https://github.com/celo-org/celo-composer/blob/main/images/readme/cc_step_1.png?raw=true)
+Great. Now let's open the project in our favorite IDE (e.g., VS Code).
 
-### Web3 library (for react-app)
+First navigate into the react-app.
 
-![Celo Composer select framework](https://github.com/celo-org/celo-composer/blob/main/images/readme/cc_step_2.png?raw=true)
+```
+cd packages/react-app/
+```
 
-### Smart contract framework
+Here install all dependencies with
 
-![Celo Composer tool selection](https://github.com/celo-org/celo-composer/blob/main/images/readme/cc_step_3.png?raw=true)
+```
+npm i
+```
 
-### Subgraph
+or
 
-![Celo Composer subgraph support](https://github.com/celo-org/celo-composer/blob/main/images/readme/cc_step_4.png?raw=true)
+```
+yarn
+```
 
-### Name your dApp
+And finally, let's start the App and see if everything is running.
 
-![Celo Composer dApp name](https://github.com/celo-org/celo-composer/blob/main/images/readme/cc_step_5.png?raw=true)
+```
+npm run dev
+```
 
-**_🔥Voila, you have a dApp ready to go. Voila, you have a dApp ready to go. Start building your dApp on Celo._**
+or
 
-### Getting started
+```
+yarn run dev
+```
 
-Once your custom dApp has been created, just install dependencies, either with `yarn` or `npm i`, and run the respective script from the `package.json` file.
-## Supported Frameworks
+---
 
-### React
+## Create ethers adapters using ethers v5 and viem
 
-- Support for Website and Progressive Web Application.
-- Works with all major crypto wallets.
+Toucan SDK uses etherjs library. Since celo composer upgraded to wagmi v1 which uses viem, we will have to create adapters for that.
 
-Check [package readme](https://github.com/celo-org/celo-composer/blob/main/packages/react-app/README.md) to learn more about.
+Check new migration guides here - [Migration guides](https://wagmi.sh/react/ethers-adapters)
 
-### React Native
+### Create a provider
 
-- Out of the box config, just focus on buidl.
-- Support for Android and IOS.
-- Works with and without [Expo](https://expo.dev/).
-- Working example app included.
+Create a utils folder and create a new file named provider.ts
 
-Check [package readme](https://github.com/celo-org/celo-composer/blob/main/packages/react-native-app/README.md) to learn more about.
+```typescript
 
-### Flutter
+import * as React from 'react'
+import { type PublicClient, usePublicClient } from 'wagmi'
+import { providers } from 'ethers'
+import { type HttpTransport } from 'viem'
 
-- One command to get started - Type `flutter run` to start development in your mobile phone.
-- Works with all major mobile crypto wallets.
-- Support for Android, IOS (Web, Windows, and Linux coming soon).
-- Working example app included.
+export function publicClientToProvider(publicClient: PublicClient) {
+  const { chain, transport } = publicClient
+  const network = {
+    chainId: chain.id,
+    name: chain.name,
+    ensAddress: chain.contracts?.ensRegistry?.address,
+  }
+  if (transport.type === 'fallback')
+    return new providers.FallbackProvider(
+      (transport.transports as ReturnType<HttpTransport>[]).map(
+        ({ value }) => new providers.JsonRpcProvider(value?.url, network),
+      ),
+    )
+  return new providers.JsonRpcProvider(transport.url, network)
+}
 
-Check [package readme](https://github.com/celo-org/celo-composer/blob/main/packages/flutter-app/README.md) to learn more about.
+/** Hook to convert a viem Public Client to an ethers.js Provider. */
+export function useEthersProvider({ chainId }: { chainId?: number } = {}) {
+  const publicClient = usePublicClient({ chainId })
+  return React.useMemo(() => publicClientToProvider(publicClient), [publicClient])
+}
 
-### Angular
 
-- Support for Website and Progressive Web Application.
-- Works with all major crypto wallets.
+```
 
-Check [package readme](https://github.com/celo-org/celo-composer/blob/main/packages/angular-app/README.md) to learn more about.
+### Create a signer
 
-<!-- USAGE EXAMPLES -->
+Inside the utils folder, create a new file named signer.ts
 
-## 🔭 Learning Solidity
 
-📕 Read the docs: <https://docs.soliditylang.org>
+```typescript
 
-- [Primitive Data Types](https://solidity-by-example.org/primitives/)
-- [Mappings](https://solidity-by-example.org/mapping/)
-- [Structs](https://solidity-by-example.org/structs/)
-- [Modifiers](https://solidity-by-example.org/function-modifier/)
-- [Events](https://solidity-by-example.org/events/)
-- [Inheritance](https://solidity-by-example.org/inheritance/)
-- [Payable](https://solidity-by-example.org/payable/)
-- [Fallback](https://solidity-by-example.org/fallback/)
+import * as React from 'react'
+import { type WalletClient, useWalletClient } from 'wagmi'
+import { providers } from 'ethers'
 
-📧 Learn the [Solidity globals and units](https://solidity.readthedocs.io/en/v0.8.19/units-and-global-variables.html)
+export function walletClientToSigner(walletClient: WalletClient) {
+  const { account, chain, transport } = walletClient
+  const network = {
+    chainId: chain.id,
+    name: chain.name,
+    ensAddress: chain.contracts?.ensRegistry?.address,
+  }
+  const provider = new providers.Web3Provider(transport, network)
+  const signer = provider.getSigner(account.address)
+  return signer
+}
 
-## Support
+/** Hook to convert a viem Wallet Client to an ethers.js Signer. */
+export function useEthersSigner({ chainId }: { chainId?: number } = {}) {
+  const { data: walletClient } = useWalletClient({ chainId })
+  return React.useMemo(
+    () => (walletClient ? walletClientToSigner(walletClient) : undefined),
+    [walletClient],
+  )
+}
+```
 
-Join the Celo Discord server at <https://chat.celo.org>. Reach out on the dedicated repo channel [here](https://discord.com/channels/600834479145353243/941003424298856448).
+## Retire Carbon Credits
 
-<!-- ROADMAP -->
+Next, we are going to retire carbon credits on Celo using the Toucan SDK. The Toucan SDK provides you with tools to simply implement carbon retirements into your app with just a few lines of code. It also provides some pre-defined subgraph queries but offers you the freedom to create any query your heart desires to get all the info about all retirements and tokens.
 
-## Roadmap
+---
 
-See the [open issues](https://github.com/celo-org/celo-composer/issues) for a full list of proposed features (and known issues).
+## Install the SDK
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+Add the Toucan SDK.
 
-<!-- CONTRIBUTING -->
+```
+npm i toucan-sdk
+```
 
-## Contributing
+or
 
-We welcome contributions from the community.
+```
+yarn add toucan-sdk
+```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+### Get Toucan Client
 
-## License
+We want to first instantiate the ToucanClient and set a signer & provider to interact with our infrastructure. We can use the signer & provider from the wagmi library. For interacting with The Graph, no provider or signer is needed though. But we will talk about that later.
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+So in the index.ts file we will add the imports to the top:
 
-<!-- CONTACT -->
-## Contact
+```typescript
+import ToucanClient from "toucan-sdk";
+import { useEthersProvider } from "@/utils/provider";
+import { useEthersSigner } from "@/utils/signer";
+```
 
-- [@CeloDevs](https://twitter.com/CeloDevs)
-- [Discord](https://discord.com/invite/celo)
+And this part into our function body. You can set the signer and provider directly or at a later point. Here we want to first check if the signer is set, meaning if the user is connected to the application with their wallet.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+```typescript
+const provider = useEthersProvider();
+const signer = useEthersSigner();
+
+const toucan = new ToucanClient("alfajores", provider);
+signer && toucan.setSigner(signer);
+```
+
+In the end our code should look like this:
+
+```typescript
+import ToucanClient from "toucan-sdk";
+import { useEthersProvider } from "@/utils/provider";
+import { useEthersSigner } from "@/utils/signer";
+
+
+export default function Home() {
+  const provider = useEthersProvider();
+  const signer = useEthersSigner();
+
+  const toucan = new ToucanClient("alfajores", provider);
+  signer && toucan.setSigner(signer);
+
+  return (
+    <div>
+      <div className="h1">
+        There we go... a canvas for your next Celo project!
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+### Redeem Tokens form a PoolContract (e.g. NCT)
+
+To retire Carbon Credits, we need pool tokens (e.g., NCTs) or carbon reference tokens like TCO2s. We can get them from the Toucan Faucet. In this example we will get NCT, as theses are the tokens, you can buy in an exchange like Ubeswap.
+
+What is the difference between NCTs and TCO2s? Simply put, TCO2s are tokenized carbon credits. While NCT are the first carbon reference tokens created on Toucans infrastructure and are stripped of most attributes. As a user you will only have TCO2 tokens, if you tokenized carbon credits yourself or if you have already redeemed NCTs for TCO2s. So, this example will start with NCTs.
+
+🍃 Get some Nature Carbon Tonnes (NCT) form the Toucan Faucet before you continue. Make sure you have CELO to pay the gas fee for the withdrawal, you can get some from the Celo Faucet. 🍃
+
+Now, using the ToucanSDK we will auto-redeem the Pool tokens with `toucan.redeemAuto2`, where they are exchanged for the lowest ranking TCO2s. The function also returns the addresses of the redeemed TCO2s, which we need for the next step. As arguments for the function, we will need the pool symbol, that we want to retire, like "NCT". We will also need to input the amount of tokens we wish to retire, use `parseEther("1")` from the "ethers.js" for that.
+
+If we prefer to choose the TCO2s that we want to retire, we can get a list of all TCO2s with `getScoredTCO2s` and then select the ones we prefer. Currently scored TCO2 means, that the tokens are sorted by year with `scoredTokens[0]` being the lowest. Using the Toucan SDK, you can get more info on each of the tokens though querying the subgraph (as described in the next part), and decide your own criteria, based on the newly released Core Carbon Principals. When choosing the TCO2 you want to retire, make sure that the balance of the token is not 0.
+
+After having chosen TCO2s we want to retire, (we can choose several) we can redeem them with toucan.redeemMany. For this Toucan Protocol takes fees. We can calculate the fee beforehand with toucan.`toucan.calculateRedeemFees`.
+
+But today we stay simple with `toucan.redeemAuto2`. The minimum amount you can redeem is 1 NCT in one transaction:
+
+await toucan.redeemAuto2("NCT", parseEther("1"));
+Now let's put that code in a function and add a button to trigger it, so we can see it in action!! We also want to store the return value, the TCO2 address in a variable, as we will want to use it in the next step.
+
+```typescript
+import { parseEther } from "ethers/lib/utils.js";
+import ToucanClient from "toucan-sdk";
+import { useState } from "react";
+import { useEthersProvider } from "@/utils/provider";
+import { useEthersSigner } from "@/utils/signer";
+
+
+export default function Home() {
+  const provider = useEthersProvider();
+  const signer = useEthersSigner();
+
+  const toucan = new ToucanClient("alfajores", provider);
+  signer && toucan.setSigner(signer);
+
+  // we will store our return value here
+  const [tco2address, setTco2address] = useState("");
+
+  const redeemPoolToken = async (): Promise<void> => {
+    const redeemedTokenAddress = await toucan.redeemAuto2(
+      "NCT",
+      parseEther("1")
+    );
+    redeemedTokenAddress && setTco2address(redeemedTokenAddress[0].address);
+  };
+
+  return (
+    <div>
+      <button
+        className="inline-flex w-full justify-center rounded-full border px-5 my-5 py-2 text-md font-medium border-wood bg-prosperity text-black hover:bg-snow"
+        onClick={() => redeemPoolToken()}
+      >
+        {"Redeem Tokens"}
+      </button>
+    </div>
+  );
+}
+```
+
+Okayyyy, let's connect our wallet Wallet Connect button and redeem the token. And 👓 Check the transaction on [Celoscan](https://alfajores.celoscan.io) 👓
+
+---
+
+### Retire TCO2s
+
+After having redeemed our pool tokens for TCO2s, we will be able to retire them. We can only retire TCO2 tokens. We can either choose to simply toucan.retire or if we would like to retire for a third party use the toucan.retireFrom function. Lastly, we can also already get a certificate created with `toucan.retireAndMintCertificate`.
+
+The first thing we will have to do, will be to get the address of our TCO2 token. We will have saved that as return value form toucan.redeemAuto2. And now we can retire our token.
+
+```typescript
+await toucan.retire(parseEther("1.0"), tco2Address);
+```
+
+Let's create a second function called retirePoolToken as well as a button for the retirement process.
+
+```typescript
+import { parseEther } from "ethers/lib/utils.js";
+import { useState } from "react";
+import ToucanClient from "toucan-sdk";
+import { useEthersProvider } from "@/utils/provider";
+import { useEthersSigner } from "@/utils/signer";
+
+export default function Home() {
+ const provider = useEthersProvider();
+  const signer = useEthersSigner();
+
+  const toucan = new ToucanClient("alfajores", provider);
+  signer && toucan.setSigner(signer);
+  const [tco2address, setTco2address] = useState("");
+
+  const redeemPoolToken = async (): Promise<void> => {
+    const redeemedTokenAddress = await toucan.redeemAuto2(
+      "NCT",
+      parseEther("1")
+    );
+    redeemedTokenAddress && setTco2address(redeemedTokenAddress[0].address);
+  };
+
+  const retirePoolToken = async (): Promise<void> => {
+    tco2address.length && (await toucan.retire(parseEther("1.0"), tco2address));
+  };
+
+  return (
+    <div>
+      <button
+        className="inline-flex w-full justify-center rounded-full border px-5 my-5 py-2 text-md font-medium border-wood bg-prosperity text-black hover:bg-snow"
+        onClick={() => redeemPoolToken()}
+      >
+        {"Redeem Tokens"}
+      </button>
+      <button
+        className="inline-flex w-full justify-center rounded-full border px-5 my-5 py-2 text-md font-medium border-wood bg-prosperity text-black hover:bg-snow"
+        onClick={() => retirePoolToken()}
+      >
+        {"Retire Tokens"}
+      </button>
+    </div>
+  );
+}
+```
+
+You now have the foundation to implement retirement with endless possibilities like in one function and trigger retirements based on an input.
+image of the app with buttons to redeem and retire
+
+---
+
+## Creating a list of our retirements
+
+In the last step, we are creating a list showing our retirements. First, we will create a new `list.tsx` page.
+
+Here we need the Toucan Client again. This time, we won't need a provider or signer as we are only querying the [subgraph](https://thegraph.com/hosted-service/subgraph/toucanprotocol/alfajores).
+
+```typescript
+const toucan = new ToucanClient("alfajores");
+```
+
+The Toucan SDK has several pre-defined queries to get data from the subgraph, but we can also create our customized query with `toucan.fetchCustomQuery()`. We can check all schemes, create and test our query in the playground of the [Toucan Subgraph](https://thegraph.com/hosted-service/subgraph/toucanprotocol/alfajores).
+
+For now, we will use one of the predefined queries, to get a list of our retirements. We will need the user address here so we will use the useAccount Hook from wagmi. Remember that an address (user, token) always needs to be lower case for querying.
+
+```typescript
+const { address } = useAccount();
+
+await toucan.fetchUserRetirements(address?.toLowerCase());
+```
+
+Now let's add save the return value in a state, add typing for our retirement data, fetch the user retirements when the component is loading and add some code to display our retirements in a table.
+
+```typescript
+import { useEffect, useState } from "react";
+import ToucanClient, { UserRetirementsResponse } from "toucan-sdk";
+import { useAccount } from "wagmi";
+
+export default function List() {
+  const toucan = new ToucanClient("alfajores");
+  const { address } = useAccount();
+
+  const [retirements, setRetirements] = useState([]);
+
+  const getUserRetirements = async () => {
+    const result =
+      address && (await toucan.fetchUserRetirements(address?.toLowerCase()));
+    result && setRetirements(result);
+  };
+
+  useEffect(() => {
+    getUserRetirements();
+  });
+
+  return (
+    <div>
+      <div className="mt-8 flow-root">
+        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            {retirements.length && (
+              <div className="overflow-hidden ring-1 ring-black">
+                <table className="min-w-full divide-y divide-black">
+                  <thead className="bg-prosperity">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                      >
+                        Token Name
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Token Symbol
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Certificate ID
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        Creation Tx
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-black bg-white">
+                    {retirements.map((item) => {
+                      return (
+                        <tr key={item.id}>
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                            {item.token.name}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {item.token.symbol}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {item.certificate?.id}
+                          </td>
+                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                            <a
+                              target="\_blank"
+                              rel="noopener noreferrer"
+                              href={`https://alfajores.celoscan.io/tx/${item.creationTx}`}
+                              className="text-forest hover:text-forest"
+                            >
+                              ...
+                              {item.creationTx.substring(
+                                item.creationTx.length - 15
+                              )}
+                            </a>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+Add the list page into the header.tsx file and your "Retirement List Page" and you are done!
+
+---
+
+Congratulations! You've build your first climate positive app. Now go explore more ways to build on Toucan in
+
+- Toucan's [documentation](https://docs.toucan.earth/toucan/dev-resources/toucan-developer-resources)
+- Toucan's [SDK](https://github.com/ToucanProtocol/toucan-sdk)
+- Toucan's [blog](https://blog.toucan.earth)
