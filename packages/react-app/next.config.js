@@ -4,10 +4,21 @@ const nextConfig = {
   swcMinify: true,
   webpack: (config) => {
     config.resolve.fallback = {
-      fs: false
-    }
-    return config
-  }
-}
+      fs: false,
+    };
+    return config;
+  },
+  images: {
+    // domains: ["pixabay.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'pixabay.com',
+        port: '',
+        // pathname: '/account123/**',
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
