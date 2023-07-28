@@ -40,11 +40,12 @@ export default function Hero() {
     try {
       tco2address.length && (await toucan.retire(parseEther(retireAmount), tco2address));
 
+	  setRetireAmount('');
 
       toast.success('TCO2 Retired', { duration: 4000 });
     } catch (error) {
 		
-		toast.error('Error Retiring Token: Get NCT from faucet');
+		toast.error('Error Retiring Token');
 	}
   };
 
@@ -105,7 +106,7 @@ export default function Hero() {
                     <div>
                       <Input
                         className=''
-                        placeholder='Retire credit amount'
+                        placeholder='Retire Carbon amount'
                         type='text'
                         value={retireAmount}
                         onChange={(e: any) => setRetireAmount(e.target.value)}
