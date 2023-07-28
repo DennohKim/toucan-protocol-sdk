@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import ToucanClient from 'toucan-sdk';
+import { Input } from './ui/input';
 
 export default function Hero() {
   const provider = useEthersProvider();
@@ -15,15 +16,19 @@ export default function Hero() {
 
   const [tco2address, setTco2address] = useState('');
   const [nctPrice, setNctPrice] = useState({});
+  const [ offset, setOffset ] = useState<string>("");
+    const [retireAmount, setRetireAmount] = useState<string>('');
+
 
   //Offset carbon
   const redeemPoolToken = async (): Promise<void> => {
     try {
       const redeemedTokenAddress = await toucan.redeemAuto2(
         'NCT',
-        parseEther('1')
+        parseEther(offset)
       );
       redeemedTokenAddress && setTco2address(redeemedTokenAddress[0].address);
+	  setOffset("");
       toast.success('TCO2 Redeemed', { duration: 4000 });
     } catch (error) {
       toast.error('Error Redeeming Token: Get NCT from faucet');
@@ -33,7 +38,7 @@ export default function Hero() {
 //retire carbon and get a certificate
   const retirePoolToken = async (): Promise<void> => {
     try {
-      tco2address.length && (await toucan.retire(parseEther('1.0'), tco2address));
+      tco2address.length && (await toucan.retire(parseEther(retireAmount), tco2address));
 
 
       toast.success('TCO2 Retired', { duration: 4000 });
@@ -82,18 +87,37 @@ export default function Hero() {
                     integration.
                   </p>
                   <div className='mt-10 flex items-center gap-x-6'>
-                    <button
-                      className='inline-flex justify-center rounded-full border px-5 my-5 py-2 text-md font-medium border-wood bg-prosperity text-wood hover:bg-snow'
-                      onClick={() => redeemPoolToken()}
-                    >
-                      {'Redeem Tokens'}
-                    </button>
-                    <button
-                      className='inline-flex justify-center rounded-full border px-5 my-5 py-2 text-md font-medium border-wood text-wood hover:bg-snow'
-                      onClick={() => retirePoolToken()}
-                    >
-                      {'Retire Tokens'}
-                    </button>
+                    <div>
+                      <Input
+                        className=''
+                        placeholder='Carbon Offset amount'
+                        type='text'
+                        value={offset}
+                        onChange={(e: any) => setOffset(e.target.value)}
+                      />
+                      <button
+                        className='inline-flex justify-center rounded-full border px-5 my-5 py-2 text-md font-medium border-wood bg-prosperity text-wood hover:bg-snow'
+                        onClick={() => redeemPoolToken()}
+                      >
+                        {'Redeem Tokens'}
+                      </button>
+                    </div>
+                    <div>
+                      <Input
+                        className=''
+                        placeholder='Retire credit amount'
+                        type='text'
+                        value={retireAmount}
+                        onChange={(e: any) => setRetireAmount(e.target.value)}
+                      />
+
+                      <button
+                        className='inline-flex justify-center rounded-full border px-5 my-5 py-2 text-md font-medium border-wood bg-forest text-white hover:bg-snow'
+                        onClick={() => retirePoolToken()}
+                      >
+                        {'Retire Tokens'}
+                      </button>
+                    </div>
                   </div>
                   <div>
                     <a
