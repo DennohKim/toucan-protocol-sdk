@@ -42,7 +42,7 @@ export default function Header() {
                 </div>
                 <div className='hidden sm:ml-6 sm:flex sm:space-x-8'>
                   <Link
-                    href='/Retirements'
+                    href='/retirements'
                     className='font-body inline-flex items-center px-1 pt-1 text-sm font-medium text-wood'
                   >
                     Retirements
@@ -68,7 +68,7 @@ export default function Header() {
               </Disclosure.Button>
               <Disclosure.Button
                 as='a'
-                href='/Retirements'
+                href='/retirements'
                 className='block border-l-4 border-white py-2 pl-3 pr-4 text-base font-medium text-wood'
               >
                 Retirements

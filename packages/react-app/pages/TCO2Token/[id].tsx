@@ -40,8 +40,6 @@ interface QueryParams extends ParsedUrlQuery {
 //   const [redeemTokenAddress, setTokenAddress] = useState<string>('');
 //   const { address } = useAccount();
 
- 
-
 //   const provider = useEthersProvider();
 //   const signer = useEthersSigner();
 
@@ -69,7 +67,6 @@ interface QueryParams extends ParsedUrlQuery {
 //     tx,
 //     owner,
 //   } = query;
-
 
 //   const retireToken = async (amount: string) => {
 //     try {
@@ -211,72 +208,49 @@ interface QueryParams extends ParsedUrlQuery {
   }
   ```
 */
-import { Disclosure, RadioGroup, Tab } from '@headlessui/react'
-import { StarIcon } from '@heroicons/react/20/solid'
-import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
-
-
+import { Disclosure, RadioGroup, Tab } from '@headlessui/react';
+import { StarIcon } from '@heroicons/react/20/solid';
+import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
+  const [contractReceipt, setcontractReceipt] = useState<ContractReceipt>();
+  const [amount, setAmount] = useState<string>('');
+  const [redeemTokenAddress, setTokenAddress] = useState<string>('');
+  const { address } = useAccount();
 
-    const [contractReceipt, setcontractReceipt] = useState<ContractReceipt>();
-    const [amount, setAmount] = useState<string>('');
-    const [redeemTokenAddress, setTokenAddress] = useState<string>('');
-    const { address } = useAccount();
+  const provider = useEthersProvider();
+  const signer = useEthersSigner();
 
-    const provider = useEthersProvider();
-    const signer = useEthersSigner();
+  const sdk = new ToucanClient('alfajores', provider);
+  signer && sdk.setSigner(signer);
 
-    const sdk = new ToucanClient('alfajores', provider);
-    signer && sdk.setSigner(signer);
+  const router = useRouter();
+  const query = router.query as QueryParams;
+  const {
+    name,
+    symbol,
+    image,
+    tokenAddress,
+    createdAt,
+    creationTx,
+    score,
+    projectVintageCreatorId,
+    startTime,
+    endTime,
+    projectVintageId,
+    isCCPcompliant,
+    isCorsiaCompliant,
+    vintageName,
+    totalVintageQuantity,
+    tx,
+    owner,
+  } = query;
 
-    const router = useRouter();
-    const query = router.query as QueryParams;
-    const {
-      name,
-      symbol,
-      image,
-      tokenAddress,
-      createdAt,
-      creationTx,
-      score,
-      projectVintageCreatorId,
-      startTime,
-      endTime,
-      projectVintageId,
-      isCCPcompliant,
-      isCorsiaCompliant,
-      vintageName,
-      totalVintageQuantity,
-      tx,
-      owner,
-    } = query;
-
-    const retireToken = async (amount: string) => {
-      try {
-        if (!amount) {
-          alert('Amount field required');
-        }
-        if (!address) {
-          alert('Please connect your wallet');
-        }
-        const retire = await sdk.retire(
-          ethers.utils.parseEther(amount),
-          tokenAddress
-        );
-        console.log(retire.transactionHash);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const handleAmount = (e: React.FormEvent<HTMLInputElement>) => {
-      setAmount(e.currentTarget.value);
-    };
+ 
 
   return (
     <div className='bg-white'>
@@ -286,12 +260,12 @@ export default function Example() {
           <Tab.Group as='div' className='flex flex-col-reverse'>
             <Tab.Panels className='aspect-w-1 aspect-h-1 w-full'>
               <Image
-              src={image}
-              alt={name}
-              width={200}
-              height={200}
-              className='w-full mb-4 rounded'
-            />
+                src={image}
+                alt={name}
+                width={200}
+                height={200}
+                className='w-full mb-4 rounded'
+              />
             </Tab.Panels>
           </Tab.Group>
 
@@ -302,37 +276,94 @@ export default function Example() {
             </h1>
 
             <div className='mt-3'>
-              <h2 className='sr-only'>Product information</h2>
-              <p className='text-3xl tracking-tight text-gray-900'>
-                {symbol}
-              </p>
+              <h2 className='font-bold'>Symbol</h2>
+              <p className='text-3xl tracking-tight text-gray-900'>{symbol}</p>
             </div>
 
             {/* Reviews */}
             <div className='mt-3'>
-              <h3 className='sr-only'>Reviews</h3>
+              <h3 className='font-bold'>Score</h3>
               <div className='flex items-center'>
-                <p className=''>{owner}</p>
+                <p className=''>{score}</p>
               </div>
             </div>
 
             <div className='mt-6'>
-              <h3 className='sr-only'>Description</h3>
-
-              <div
-                className='space-y-6 text-base text-gray-700'
-                dangerouslySetInnerHTML={{ __html: projectVintageCreatorId }}
-              />
+              <p className='text-slate-400 mt-2'>
+                <Link
+                  className='underline text-blue-500'
+                  href={`https://explorer.celo.org/alfajores/tx/${creationTx}`}
+                >
+                  Creation Hash
+                </Link>
+              </p>
             </div>
 
             <section aria-labelledby='details-heading' className='mt-12'>
-              <h2 id='details-heading' className='sr-only'>
+              <h2 id='details-heading' className=''>
                 Additional details
               </h2>
 
-              <div className='divide-y divide-gray-200 border-t'>
-                
+              <div className='p-2 text-lg'>
+                <p className='mt-2'>
+                  {' '}
+                  <span className='text-sm font-bold'>Project VIntage</span>{' '}
+                  {vintageName}
+                </p>
+                <p className='mt-2'>
+                  <span className='text-sm font-bold'>Id:</span>{' '}
+                  {projectVintageCreatorId}
+                </p>
+                <p className='mt-2'>
+                  <span className='text-sm font-bold'>StartTime:</span>{' '}
+                  {formattedDate(parseInt(startTime))}
+                </p>
+                <p className='mt-2'>
+                  <span className='text-sm font-bold'>EndTime:</span>{' '}
+                  {formattedDate(parseInt(endTime))}
+                </p>
+                <p className='mt-2'>
+                  <span className='text-sm font-bold'>isCCPcompliant:</span>{' '}
+                  {isCCPcompliant}
+                </p>
+                <p className='mt-2'>
+                  <span className='text-sm font-bold'>isCorsiaCompliant:</span>{' '}
+                  {isCorsiaCompliant}
+                </p>
+                <p className='mt-2'>
+                  <span className='text-sm font-bold'>
+                    totalVintageQuantity:
+                  </span>{' '}
+                  {totalVintageQuantity}
+                </p>
+                <span className='mr-2 mt-2'>
+                  <Link
+                    className='text-blue-400 text-sm'
+                    href={`https://explorer.celo.org/alfajores/address/${projectVintageCreatorId}`}
+                  >
+                    Vintage Creator Id
+                  </Link>
+                </span>
+
+                <span className='text-slate-400 m-2'>
+                  <Link
+                    className='text-blue-400 text-sm'
+                    href={`https://explorer.celo.org/alfajores/address/${owner}`}
+                  >
+                    owner
+                  </Link>
+                </span>
+                <span className='text-slate-400 mt-2'>
+                  <Link
+                    className='text-blue-400'
+                    href={`https://explorer.celo.org/alfajores/tx/${tx}`}
+                  >
+                    Transaction Hash
+                  </Link>
+                </span>
               </div>
+
+              <div className='divide-y divide-gray-200 border-t'></div>
             </section>
           </div>
         </div>
@@ -340,4 +371,3 @@ export default function Example() {
     </div>
   );
 }
-

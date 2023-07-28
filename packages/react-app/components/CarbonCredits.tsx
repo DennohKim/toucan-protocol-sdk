@@ -89,8 +89,8 @@ export default function CarbonCredits() {
                             className='h-full w-full object-cover object-center'
                             key={index}
                             src={
-                              images[index].webformatURL &&
-                              images[index].webformatURL
+                              images[index]?.webformatURL &&
+                              images[index]?.webformatURL
                             }
                             alt='images'
                             height={100}
@@ -108,7 +108,7 @@ export default function CarbonCredits() {
                       <button
                         onClick={() =>
                           Router.push({
-                            pathname: `/MarketPlace/${item.address}`,
+                            pathname: `/TCO2Token/${item.address}`,
                             query: {
                               id: item.id,
                               symbol: item.symbol,

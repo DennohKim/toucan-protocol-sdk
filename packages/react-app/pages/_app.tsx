@@ -10,6 +10,7 @@ import { Alfajores, Celo } from '@celo/rainbowkit-celo/chains';
 import { ApolloProvider } from '@apollo/client';
 import client from '../apollo-client';
 import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID as string; // get one at https://cloud.walletconnect.com/app
@@ -47,6 +48,7 @@ function App({ Component, pageProps }: AppProps) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains} appInfo={appInfo} coolMode={true}>
         <ApolloProvider client={client}>
+			<Toaster position="top-center"/>
           <Layout>
             <Component
               {...pageProps}

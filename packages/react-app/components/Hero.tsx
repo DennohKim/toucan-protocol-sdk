@@ -2,7 +2,8 @@ import { useEthersProvider } from '@/utils/provider';
 import { useEthersSigner } from '@/utils/signer';
 import { parseEther } from 'ethers/lib/utils';
 import Link from 'next/link';
-import { useState } from 'react';
+import { use, useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import ToucanClient from 'toucan-sdk';
 
 export default function Hero() {
@@ -13,18 +14,45 @@ export default function Hero() {
   signer && toucan.setSigner(signer);
 
   const [tco2address, setTco2address] = useState('');
+  const [nctPrice, setNctPrice] = useState({});
 
+  //Offset carbon
   const redeemPoolToken = async (): Promise<void> => {
-    const redeemedTokenAddress = await toucan.redeemAuto2(
-      'NCT',
-      parseEther('1')
-    );
-    redeemedTokenAddress && setTco2address(redeemedTokenAddress[0].address);
+    try {
+      const redeemedTokenAddress = await toucan.redeemAuto2(
+        'NCT',
+        parseEther('1')
+      );
+      redeemedTokenAddress && setTco2address(redeemedTokenAddress[0].address);
+      toast.success('TCO2 Redeemed', { duration: 4000 });
+    } catch (error) {
+      toast.error('Error Redeeming Token: Get NCT from faucet');
+    }
   };
 
+//retire carbon and get a certificate
   const retirePoolToken = async (): Promise<void> => {
-    tco2address.length && (await toucan.retire(parseEther('1.0'), tco2address));
+    try {
+      tco2address.length && (await toucan.retire(parseEther('1.0'), tco2address));
+
+
+      toast.success('TCO2 Retired', { duration: 4000 });
+    } catch (error) {
+		
+		toast.error('Error Retiring Token: Get NCT from faucet');
+	}
   };
+
+
+//Fetch NCT price
+  useEffect(() => {
+	  const getNCTPrice = async (): Promise<void> => {
+      const price = await toucan.fetchTokenPriceOnDex('NCT');
+      setNctPrice(price);
+    };
+	getNCTPrice();
+  }, [toucan]);
+
   return (
     <div className='bg-white'>
       <main>
@@ -34,7 +62,7 @@ export default function Hero() {
             aria-hidden='true'
           >
             <div
-              className='aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30'
+              className='aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-forest to-prosperity opacity-30'
               style={{
                 clipPath:
                   'polygon(63.1% 29.5%, 100% 17.1%, 76.6% 3%, 48.4% 0%, 44.6% 4.7%, 54.5% 25.3%, 59.8% 49%, 55.2% 57.8%, 44.4% 57.2%, 27.8% 47.9%, 35.1% 81.5%, 0% 97.7%, 39.2% 100%, 35.2% 81.4%, 97.2% 52.8%, 63.1% 29.5%)',
