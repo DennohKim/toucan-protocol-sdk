@@ -16,9 +16,9 @@ export default function Hero() {
 
   const [tco2address, setTco2address] = useState('');
   const [nctPrice, setNctPrice] = useState({});
-  const [ offset, setOffset ] = useState<string>("");
-    const [retireAmount, setRetireAmount] = useState<string>('');
-
+  const [offset, setOffset] = useState<string>('');
+  const [retireAmount, setRetireAmount] = useState<string>('');
+  const [NCTLength, setNCTLength] = useState(0);
 
   //Offset carbon
   const redeemPoolToken = async (): Promise<void> => {
@@ -28,36 +28,45 @@ export default function Hero() {
         parseEther(offset)
       );
       redeemedTokenAddress && setTco2address(redeemedTokenAddress[0].address);
-	  setOffset("");
+      setOffset('');
       toast.success('TCO2 Redeemed', { duration: 4000 });
     } catch (error) {
       toast.error('Error Redeeming Token: Get NCT from faucet');
     }
   };
 
-//retire carbon and get a certificate
+  //retire carbon and get a certificate
   const retirePoolToken = async (): Promise<void> => {
     try {
-      tco2address.length && (await toucan.retire(parseEther(retireAmount), tco2address));
+      tco2address.length &&
+        (await toucan.retire(parseEther(retireAmount), tco2address));
 
-	  setRetireAmount('');
+      setRetireAmount('');
 
       toast.success('TCO2 Retired', { duration: 4000 });
     } catch (error) {
-		
-		toast.error('Error Retiring Token');
-	}
+      toast.error('Error Retiring Token');
+    }
   };
 
-
-//Fetch NCT price
+  //Fetch NCT Balance
   useEffect(() => {
-	  const getNCTPrice = async (): Promise<void> => {
+    const fetchResult = async () => {
+      const scoredTCO2s = await toucan.getScoredTCO2s('NCT');
+      const len = scoredTCO2s.length;
+      setNCTLength(len);
+    };
+    fetchResult();
+  }, []);
+
+  //Fetch NCT price
+  useEffect(() => {
+    const getNCTPrice = async (): Promise<void> => {
       const price = await toucan.fetchTokenPriceOnDex('NCT');
       setNctPrice(price);
     };
-	getNCTPrice();
-  }, [toucan]);
+    getNCTPrice();
+  }, []);
 
   return (
     <div className='bg-white'>
@@ -120,7 +129,10 @@ export default function Hero() {
                       </button>
                     </div>
                   </div>
-                  <div>
+                  <div className='flex space-x-3 '>
+                    <p className='text-wood border-r-2 pr-4'>
+                      NCT Tokens: {NCTLength > 0 ? NCTLength : '0'}
+                    </p>
                     <a
                       href='https://faucet.toucan.earth/'
                       target='_blank'

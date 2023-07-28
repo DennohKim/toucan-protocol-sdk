@@ -5,40 +5,34 @@ import { PoolSymbol } from 'toucan-sdk/dist/types';
 import { useAccount } from 'wagmi';
 import { RedeemsResponse } from 'toucan-sdk';
 import { useEthersProvider } from '@/utils/provider';
+import { useEthersSigner } from '@/utils/signer';
 
 export default function Redeems() {
   const { address } = useAccount();
   const [redeems, setRedeems] = useState<RedeemsResponse[] | undefined>([]);
 
-  const sdk = new ToucanClient('alfajores');
+ const provider = useEthersProvider();
+ const signer = useEthersSigner();
 
-    const fetchResult = useCallback(async () => {
-      const myAddress = address?.toLocaleLowerCase() as string;
-      const list = await sdk.fetchUserRedeems(myAddress, 'NCT');
-      setRedeems(list);
-      console.log(redeems);
-      return redeems;
-    }, [address, redeems]);
+ const toucan = new ToucanClient('alfajores', provider);
+ signer && toucan.setSigner(signer);
 
-    useEffect(() => {
-      fetchResult();
-    }, []);
-  
+ 
 
 
-//   useEffect(() => {
+  useEffect(() => {
 
-//     const getUserRedeems = async () => {
-//       const result = address && (await sdk.fetchUserRedeems(address?.toLowerCase(), 'NCT'));
-//       result && setRedeems(result);
-// 	  console.log(result);
-//     };
+    const getUserRedeems = async () => {
+      const result = address && (await toucan.fetchUserRedeems(address?.toLowerCase(), 'NCT'));
+      result && setRedeems(result);
+	  console.log(result);
+    };
 
-//     // Call the getUserRetirements function
-//     getUserRedeems();
-//   }, [address]);
+    // Call the getUserRetirements function
+    getUserRedeems();
+  }, [address]);
 
-//   console.log(redeems?.length);
+  console.log(redeems?.length);
 
   return <div>Redeems</div>;
 }
