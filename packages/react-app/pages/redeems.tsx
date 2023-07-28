@@ -12,32 +12,33 @@ export default function Redeems() {
 
   const sdk = new ToucanClient('alfajores');
 
-  //   const fetchResult = useCallback(async () => {
-  //     const myAddress = address?.toLocaleLowerCase() as string;
-  //     const list = await sdk.fetchUserRedeems(myAddress, 'NCT');
-  //     setRedeems(list);
-  //     console.log(redeems);
-  //     return redeems;
-  //   }, [address, redeems]);
+    const fetchResult = useCallback(async () => {
+      const myAddress = address?.toLocaleLowerCase() as string;
+      const list = await sdk.fetchUserRedeems(myAddress, 'NCT');
+      setRedeems(list);
+      console.log(redeems);
+      return redeems;
+    }, [address, redeems]);
 
-  //   useEffect(() => {
-  //     fetchResult();
-  //   }, []);
+    useEffect(() => {
+      fetchResult();
+    }, []);
   
 
 
-  useEffect(() => {
+//   useEffect(() => {
 
-    const getUserRedeems = async () => {
-      const result = address && (await sdk.fetchUserRedeems(address, 'NCT'));
-      result && setRedeems(result);
-    };
+//     const getUserRedeems = async () => {
+//       const result = address && (await sdk.fetchUserRedeems(address?.toLowerCase(), 'NCT'));
+//       result && setRedeems(result);
+// 	  console.log(result);
+//     };
 
-    // Call the getUserRetirements function
-    getUserRedeems();
-  }, [address]);
+//     // Call the getUserRetirements function
+//     getUserRedeems();
+//   }, [address]);
 
-  console.log(redeems?.length);
+//   console.log(redeems?.length);
 
   return <div>Redeems</div>;
 }
