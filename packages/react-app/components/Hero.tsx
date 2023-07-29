@@ -131,7 +131,7 @@ export default function Hero() {
                   </div>
                   <div className='flex space-x-3 '>
                     <p className='text-wood border-r-2 pr-4'>
-                      NCT Tokens: {NCTLength > 0 ? NCTLength : '0'}
+                      TCO2 Scored: {NCTLength > 0 ? NCTLength : '0'}
                     </p>
                     <a
                       href='https://faucet.toucan.earth/'
