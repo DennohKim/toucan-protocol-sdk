@@ -37,10 +37,6 @@ interface QueryParams extends ParsedUrlQuery {
   owner: string;
 }
 
-
-
-
-
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ');
 }
@@ -79,8 +75,6 @@ export default function Example() {
     owner,
   } = query;
 
- 
-
   return (
     <div className='bg-white'>
       <div className='mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8'>
@@ -117,7 +111,7 @@ export default function Example() {
               </div>
             </div>
 
-            <div className='mt-6'>
+            <div className='mt-6 border-b pb-4 border-gray-200'>
               <p className='text-slate-400 mt-2'>
                 <Link
                   className='underline text-blue-500'
@@ -128,59 +122,45 @@ export default function Example() {
               </p>
             </div>
 
-            <section aria-labelledby='details-heading' className='mt-12'>
-              <h2 id='details-heading' className=''>
+            <section aria-labelledby='details-heading' className='mt-4'>
+              <h2 id='details-heading' className='font-bold'>
                 Additional details
               </h2>
 
               <div className='p-2 text-lg'>
                 <p className='mt-2'>
                   {' '}
-                  <span className='text-sm font-bold'>Project VIntage</span>{' '}
+                  <span className='text-sm font-semibold'>
+                    Project VIntage:
+                  </span>{' '}
                   {vintageName}
                 </p>
                 <p className='mt-2'>
-                  <span className='text-sm font-bold'>StartTime:</span>{' '}
+                  <span className='text-sm font-semibold'>StartTime:</span>{' '}
                   {formattedDate(parseInt(startTime))}
                 </p>
                 <p className='mt-2'>
-                  <span className='text-sm font-bold'>EndTime:</span>{' '}
+                  <span className='text-sm font-semibold'>EndTime:</span>{' '}
                   {formattedDate(parseInt(endTime))}
                 </p>
                 <p className='mt-2'>
-                  <span className='text-sm font-bold'>isCCPcompliant:</span>{' '}
+                  <span className='text-sm font-semibold'>isCCPcompliant:</span>{' '}
                   {isCCPcompliant}
                 </p>
                 <p className='mt-2'>
-                  <span className='text-sm font-bold'>isCorsiaCompliant:</span>{' '}
+                  <span className='text-sm font-semibold'>isCorsiaCompliant:</span>{' '}
                   {isCorsiaCompliant}
                 </p>
                 <p className='mt-2'>
-                  <span className='text-sm font-bold'>
+                  <span className='text-sm font-semibold'>
                     totalVintageQuantity:
                   </span>{' '}
                   {totalVintageQuantity}
                 </p>
-                <span className='mr-2 mt-2'>
-                  <Link
-                    className='text-blue-400 text-sm'
-                    href={`https://explorer.celo.org/alfajores/address/${projectVintageCreatorId}`}
-                  >
-                    Vintage Creator Id
-                  </Link>
-                </span>
 
-                <span className='text-slate-400 m-2'>
-                  <Link
-                    className='text-blue-400 text-sm'
-                    href={`https://explorer.celo.org/alfajores/address/${owner}`}
-                  >
-                    owner
-                  </Link>
-                </span>
                 <span className='text-slate-400 mt-2'>
                   <Link
-                    className='text-blue-400'
+                    className='text-blue-400 text-sm'
                     href={`https://explorer.celo.org/alfajores/tx/${tx}`}
                   >
                     Transaction Hash

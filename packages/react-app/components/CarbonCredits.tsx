@@ -106,8 +106,6 @@ export default function CarbonCredits() {
                             createdAt: item.createdAt,
                             creationTx: item.creationTx,
                             score: item.score,
-                            projectVintageCreatorId:
-                              item.projectVintage.creator.id,
                             startTime: item.projectVintage.startTime,
                             endTime: item.projectVintage.endTime,
                             projectVintageId: item.projectVintage.id,
@@ -118,7 +116,6 @@ export default function CarbonCredits() {
                             totalVintageQuantity:
                               item.projectVintage.totalVintageQuantity,
                             tx: item.projectVintage.tx,
-                            owner: item.projectVintage.owner.id,
                           },
                         })
                       }
