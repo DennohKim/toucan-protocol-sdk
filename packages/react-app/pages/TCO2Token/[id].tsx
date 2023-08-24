@@ -140,10 +140,6 @@ export default function Example() {
                   {vintageName}
                 </p>
                 <p className='mt-2'>
-                  <span className='text-sm font-bold'>Id:</span>{' '}
-                  {projectVintageCreatorId}
-                </p>
-                <p className='mt-2'>
                   <span className='text-sm font-bold'>StartTime:</span>{' '}
                   {formattedDate(parseInt(startTime))}
                 </p>
